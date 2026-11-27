@@ -1,0 +1,65 @@
+# Every push to main runs the checks, builds the site and ships dist/ to the Oracle box as a tarball over SSH.
+# On the box ~/bin/publish-report unpacks it into ~/sites/report/releases/<UTC time> and repoints `current`
+# (five releases kept for rollback). Secrets (set by Remy, never printed):
+#   OCI_SSH_KEY      private key for ubuntu@ the box
+#   OCI_KNOWN_HOSTS  the box's pinned host key line(s), so the connection cannot be redirected
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  BOX: ubuntu@40.233.100.237
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: production
+      url: https://report.remypost.me
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+      - name: Ship dist/ to the box
+        env:
+          OCI_SSH_KEY: ${{ secrets.OCI_SSH_KEY }}
+          OCI_KNOWN_HOSTS: ${{ secrets.OCI_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$OCI_SSH_KEY" ] || [ -z "$OCI_KNOWN_HOSTS" ]; then
+            echo "::error::OCI_SSH_KEY and OCI_KNOWN_HOSTS must be set (see README, How changes ship)"; exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$OCI_SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$OCI_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          tar -czf - -C dist . | ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes -o ConnectTimeout=20 "$BOX" '~/bin/publish-report'
+
+      - name: Check the site serves this build
+        run: |
+          asset=$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1)
+          if curl -fsS --max-time 15 https://report.remypost.me/ | grep -q "$asset"; then
+            echo "https://report.remypost.me/ serves $asset"
+          else
+            echo "::warning::https://report.remypost.me/ is not serving $asset yet (DNS or certificate pending?)"
+          fi
+
+      - name: Remove the key
+        if: always()
+        run: rm -f ~/.ssh/deploy

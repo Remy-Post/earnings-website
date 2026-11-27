@@ -1,0 +1,24 @@
+#!/bin/bash
+# Installed on the Oracle box as ~/bin/publish-report (by deploy/install-box.sh).
+# Reads a gzipped tarball of the built site (dist/) on stdin, unpacks it into a new release folder, checks it,
+# then atomically repoints "current" at it. Keeps 5 releases; rollback = point current at an older one.
+# Works as a forced command (restrict,command="/home/ubuntu/bin/publish-report" in authorized_keys) or run
+# directly by the deploy workflow over a normal key.
+set -euo pipefail
+ROOT=/home/ubuntu/sites/report
+NAME=$(date -u +%Y%m%d-%H%M%S)
+REL="$ROOT/releases/$NAME"
+mkdir -p "$ROOT/releases" "$REL"
+# At most 60 MB, no owners or permissions from the upload, no paths outside the release folder.
+if ! head -c 60000000 | tar -xz -C "$REL" --no-same-owner --no-same-permissions; then
+  rm -rf "$REL"; echo "upload is not a valid gzipped tarball" >&2; exit 1
+fi
+if [ ! -f "$REL/index.html" ] || ! ls "$REL"/assets/*.js >/dev/null 2>&1; then
+  rm -rf "$REL"; echo "no index.html or assets/*.js in upload" >&2; exit 1
+fi
+chmod -R a+rX "$REL"
+# Relative link so it also resolves inside the Caddy container (/srv/sites/report/...).
+ln -sfn "releases/$NAME" "$ROOT/current.tmp"
+mv -Tf "$ROOT/current.tmp" "$ROOT/current"
+ls -1dt "$ROOT"/releases/*/ | tail -n +6 | xargs -r rm -rf
+echo "published $NAME"

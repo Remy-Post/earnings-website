@@ -1,0 +1,56 @@
+# BEGIN report — managed by Remy-Post/earnings-website deploy/install-box.sh (replaces everything up to END report)
+# report.remypost.me: the COMP-4112 final report, public.
+#   App:  /srv/sites/report/current -> releases/<name>  (GitHub Actions on push to main -> ~/bin/publish-report)
+#   Data: GET /api/v1/report only -> earnings-relay:8765, the same API as earnings.remypost.me (which is tailnet-only).
+#         While the Mac sleeps that answers 502 and the site reads /data/report.json, the offline copy pushed
+#         next to snapshot.json in /srv/sites/earnings/data. Nothing else under /api or /data is reachable here.
+report.remypost.me {
+	encode zstd gzip
+	log
+	request_body {
+		max_size 16KB
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Cross-Origin-Opener-Policy "same-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+		Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		-Server
+	}
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+	@pages not path /assets/*
+	header @pages Cache-Control "no-cache"
+
+	@report_api {
+		method GET HEAD
+		path /api/v1/report
+	}
+	route {
+		handle @report_api {
+			reverse_proxy earnings-relay:8765 {
+				header_up -Cookie
+				header_up -Authorization
+			}
+		}
+		handle /data/report.json {
+			root * /srv/sites/earnings
+			file_server
+		}
+		handle /api/* {
+			respond "Not found" 404
+		}
+		handle /data/* {
+			respond "Not found" 404
+		}
+		handle {
+			root * /srv/sites/report/current
+			try_files {path} /index.html
+			file_server
+		}
+	}
+}
+# END report
