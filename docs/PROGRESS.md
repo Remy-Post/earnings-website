@@ -3,6 +3,9 @@
 Newest first. Times are dates in Eastern time.
 
 ## 2026-11-27
+- `GET /api/v1/report` built in Remy-Post/data-science#27 with the requested shape (plus `frozen_for_live_test`
+  on regression rows). Its offline copy is `/data/v1/report.json` (written by `app.api.publish`, carried by the
+  existing `sync.sh`), so the site's fallback and the Caddy rule now point there; Caddy block reinstalled.
 - Created the public repository Remy-Post/earnings-website (name chosen by Remy), merge commits only,
   branches deleted on merge, `main` protected (pull request and the `checks` CI job required).
   Pull requests, stacked: [#1 scaffold](https://github.com/Remy-Post/earnings-website/pull/1),

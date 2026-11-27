@@ -2,7 +2,7 @@
 # report.remypost.me: the COMP-4112 final report, public.
 #   App:  /srv/sites/report/current -> releases/<name>  (GitHub Actions on push to main -> ~/bin/publish-report)
 #   Data: GET /api/v1/report only -> earnings-relay:8765, the same API as earnings.remypost.me (which is tailnet-only).
-#         While the Mac sleeps that answers 502 and the site reads /data/report.json, the offline copy pushed
+#         While the Mac sleeps that answers 502 and the site reads /data/v1/report.json, the offline copy pushed
 #         next to snapshot.json in /srv/sites/earnings/data. Nothing else under /api or /data is reachable here.
 report.remypost.me {
 	encode zstd gzip
@@ -36,7 +36,7 @@ report.remypost.me {
 				header_up -Authorization
 			}
 		}
-		handle /data/report.json {
+		handle /data/v1/report.json {
 			root * /srv/sites/earnings
 			file_server
 		}
