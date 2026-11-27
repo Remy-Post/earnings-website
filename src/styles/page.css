@@ -1,0 +1,54 @@
+/* One page column: a 45rem plate plus equal side padding, centred (DESIGN.md section 5). */
+.page,
+.footer {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--plate) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+.page {
+  flex: 1;
+  padding-top: var(--s-12);
+  padding-bottom: var(--s-18);
+}
+
+.title-block { margin-bottom: var(--s-8); }
+
+.page-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-32);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  max-width: var(--plate);
+}
+
+.lede {
+  margin-top: var(--s-4);
+  max-width: var(--measure);
+  font-family: var(--font-serif);
+  font-size: var(--t-20);
+  line-height: 1.45;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.skeleton { color: var(--ink-3); }
+
+.footer {
+  padding-top: var(--s-6);
+  padding-bottom: max(var(--s-8), env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--hair);
+  font-size: var(--t-13);
+  color: var(--ink-2);
+}
+.footer p { max-width: var(--measure-13); }
+.footer p + p { margin-top: var(--s-2); }
+
+@media (min-width: 48rem) {
+  .page-title { font-size: var(--t-44); }
+  .lede { font-size: var(--t-24); text-wrap: balance; }
+}
