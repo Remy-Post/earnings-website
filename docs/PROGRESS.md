@@ -3,6 +3,11 @@
 Newest first. Times are dates in Eastern time.
 
 ## 2026-11-27
+- Created the public repository Remy-Post/earnings-website (name chosen by Remy), merge commits only,
+  branches deleted on merge, `main` protected (pull request and the `checks` CI job required).
+  Pull requests, stacked: [#1 scaffold](https://github.com/Remy-Post/earnings-website/pull/1),
+  [#2 report](https://github.com/Remy-Post/earnings-website/pull/2),
+  [#3 deploy](https://github.com/Remy-Post/earnings-website/pull/3); CI green on all three.
 - Box (branch `deploy`): `deploy/install-box.sh` installed `~/bin/publish-report` and the `# BEGIN report`
   Caddy block right after `# END earnings` (backup `Caddyfile.bak-report-20261127-172249`, validated, reloaded;
   a guard refuses any edit outside the block). A test upload published release `20261127-172305`.
