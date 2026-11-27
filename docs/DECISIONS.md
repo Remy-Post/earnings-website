@@ -29,7 +29,7 @@ test, is vermillion (square). Other models are neutral ink. No other hues, so no
 ## D3. Data only from the backend
 Rule from Remy: this repository holds frontend resources only. The site fetches `GET /api/v1/report`
 same-origin; if that fails (the API runs on the project Mac and answers 502 while it sleeps) it reads the
-offline copy `/data/report.json`. The fixture in `src/data/fixture.json` is used by `npm run dev` and
+offline copy `/data/v1/report.json`. The fixture in `src/data/fixture.json` is used by `npm run dev` and
 the tests only and is never imported by production code (a test checks the built bundle for it).
 
 Prose numbers are computed from the payload by small formatters, so the text can never disagree with
@@ -58,7 +58,7 @@ Shape (fractions of price, every field present, nullable where noted). Full text
   without `index.html`, and repoints `current` atomically.
 - Caddy serves the release with the house security headers and a strict CSP, and proxies exactly
   `GET|HEAD /api/v1/report` to `earnings-relay:8765` (same backend as earnings.remypost.me), plus
-  `/data/report.json` from the earnings offline-copy folder. Nothing else under `/api` is reachable from
+  `/data/v1/report.json` from the earnings offline-copy folder. Nothing else under `/api` is reachable from
   this host: earnings.remypost.me was made tailnet-only on 2026-11-27, and the report needs one read.
 
 ## D7. Deploy key: reuse `~/.ssh/oci_n8n` (Remy's choice)

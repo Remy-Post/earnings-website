@@ -2,7 +2,7 @@ import type { ReportPayload } from "./types";
 
 /** Where the payload is read from, in order: the API on this origin, then the offline copy the project Mac
  *  pushes to the box (the API answers 502 while the Mac sleeps). */
-export const SOURCES = ["/api/v1/report", "/data/report.json"] as const;
+export const SOURCES = ["/api/v1/report", "/data/v1/report.json"] as const;
 
 export type Loaded = { payload: ReportPayload; from: (typeof SOURCES)[number] };
 

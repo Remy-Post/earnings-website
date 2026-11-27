@@ -15,6 +15,8 @@ export type RegressionRow = {
   share_beats_b0: number | null;
   t_stat: number | null;
   t_p: number | null;
+  /** True for the row of the model frozen for the live test (linear_v0). */
+  frozen_for_live_test?: boolean;
 };
 
 export type ClassificationRow = {
@@ -22,6 +24,7 @@ export type ClassificationRow = {
   family: string;
   feature_set: string;
   n: number;
+  n_fit?: number;
   n_positive: number;
   threshold: number;
   tn: number;
