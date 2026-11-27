@@ -52,3 +52,205 @@
   .page-title { font-size: var(--t-44); }
   .lede { font-size: var(--t-24); text-wrap: balance; }
 }
+
+.byline {
+  margin-top: var(--s-4);
+  max-width: var(--measure-13);
+  font-size: var(--t-13);
+  color: var(--ink-2);
+}
+
+.body-skeleton { min-height: 100vh; }
+
+/* ------------------------------------------------------------ chapters */
+.chapter { margin-top: var(--s-18); }
+
+.chapter-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-32);
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+}
+
+.finding {
+  margin-top: var(--s-3);
+  max-width: var(--measure);
+  font-family: var(--font-serif);
+  font-size: var(--t-20);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.body {
+  margin-top: var(--s-4);
+  max-width: var(--measure);
+}
+
+.hypotheses { margin-top: var(--s-4); max-width: var(--measure); }
+.hypotheses li + li { margin-top: var(--s-2); }
+.hypotheses strong { font-weight: 600; }
+
+/* ------------------------------------------------------------ chapter list: in the right margin from 75rem */
+.toc { display: none; }
+@media (min-width: 75rem) {
+  .toc {
+    display: block;
+    position: fixed;
+    top: var(--s-12);
+    left: calc(50% + var(--plate) / 2 + var(--gutter) + var(--s-8));
+    width: 13rem;
+    font-size: var(--t-13);
+    line-height: 1.4;
+  }
+  .toc li + li { margin-top: var(--s-2); }
+  .toc a { color: var(--ink-2); text-decoration-line: none; }
+  .toc a:hover { color: var(--ink); text-decoration-line: underline; }
+}
+
+/* ------------------------------------------------------------ figures */
+.figure { margin-top: var(--s-8); }
+
+.figure-title {
+  font-size: var(--t-17);
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: var(--measure);
+}
+
+.figure-sub {
+  margin-top: var(--s-1);
+  max-width: var(--measure-15);
+  font-size: var(--t-15);
+  color: var(--ink-2);
+}
+
+.figure-note,
+.table-note {
+  margin-top: var(--s-3);
+  max-width: var(--measure-13);
+  font-size: var(--t-13);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.chart { margin-top: var(--s-4); width: 100%; }
+.chart svg { display: block; overflow: visible; }
+
+[data-chart] text { font-family: var(--font-sans); fill: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+[data-chart] .tick { font-size: 12px; fill: var(--ink-3); }
+[data-chart] .axis-title { font-size: 12px; fill: var(--ink-3); }
+[data-chart] .row-label { font-size: 13px; fill: var(--ink); }
+[data-chart] .row-label.strong { font-weight: 600; }
+[data-chart] .row-value { font-size: 13px; fill: var(--ink-2); }
+[data-chart] .ref-label { font-size: 12px; fill: var(--ink-2); font-weight: 500; }
+/* A halo in the ground colour keeps labels readable where a gridline or the reference line crosses them. */
+[data-chart] .row-label, [data-chart] .row-value, [data-chart] .ref-label {
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+[data-chart] .grid { stroke: var(--hair); stroke-width: 1; }
+[data-chart] .row-rule { stroke: var(--hair); stroke-width: 1; opacity: 0.6; }
+[data-chart] .ref { stroke: var(--b0); stroke-width: 1.5; }
+[data-chart] .ref.neutral { stroke: var(--hair-strong); }
+
+.interval { stroke: var(--ink-3); stroke-width: 2; stroke-linecap: round; }
+.interval.chosen { stroke: var(--v0); }
+
+.mark { stroke: var(--bg); stroke-width: 1; }
+.mark.b0 { fill: var(--b0); }
+.mark.chosen { fill: var(--v0); }
+.mark.other { fill: var(--ink-2); }
+.mark.hollow { fill: var(--bg); stroke: var(--ink-2); stroke-width: 1.5; }
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin-top: var(--s-3);
+  font-size: var(--t-13);
+  color: var(--ink-2);
+}
+.key li { display: inline-flex; align-items: center; gap: var(--s-2); }
+
+.segmented {
+  display: inline-flex;
+  margin-top: var(--s-4);
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+}
+.segmented button {
+  min-height: 44px;
+  padding: 0 var(--s-4);
+  border: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: var(--t-15);
+  cursor: pointer;
+  transition: background-color 150ms var(--ease), color 150ms var(--ease);
+}
+.segmented button + button { border-left: 1px solid var(--control); }
+.segmented button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+.table-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--s-3);
+  padding: 0 var(--s-4);
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  background: transparent;
+  font-size: var(--t-15);
+  cursor: pointer;
+}
+.table-toggle:hover { background: var(--surface); }
+
+/* ------------------------------------------------------------ tables */
+/* A table wider than the plate scrolls in its own box; a fade on the side with more columns shows it. */
+.table-wrap {
+  margin-top: var(--s-6);
+  overflow-x: auto;
+  background:
+    linear-gradient(to right, var(--bg) 30%, transparent) left / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--bg) 30%, transparent) right / 2rem 100% no-repeat local,
+    linear-gradient(to right, color-mix(in oklab, var(--ink) 14%, transparent), transparent) left / 0.75rem 100% no-repeat scroll,
+    linear-gradient(to left, color-mix(in oklab, var(--ink) 14%, transparent), transparent) right / 0.75rem 100% no-repeat scroll;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.figure-table .table-wrap { margin-top: var(--s-3); }
+
+.table {
+  width: 100%;
+  font-size: var(--t-15);
+  line-height: 1.4;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+.table th,
+.table td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--hair);
+  text-align: left;
+  vertical-align: top;
+}
+.table th:first-child, .table td:first-child { padding-left: 0; }
+.table th:last-child, .table td:last-child { padding-right: 0; }
+.table thead th {
+  font-size: var(--t-13);
+  font-weight: 500;
+  color: var(--ink-2);
+  border-bottom-color: var(--hair-strong);
+  vertical-align: bottom;
+}
+.table tbody th { font-weight: 400; min-width: 8rem; }
+.table .num { text-align: right; white-space: nowrap; }
+.table thead th.num { white-space: normal; }
+.table tr.strong th, .table tr.strong td { font-weight: 600; }
+
+@media (min-width: 48rem) {
+  .chapter-title { font-size: var(--t-32); }
+  .finding { font-size: var(--t-24); }
+}
