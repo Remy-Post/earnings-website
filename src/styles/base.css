@@ -1,0 +1,141 @@
+/* Scales from DESIGN.md (data-science app/web). Type in rem only: 0.75 0.8125 0.9375 1.0625 1.25 1.5 2 2.75.
+   Spacing in rem: 0.25 0.5 0.75 1 1.5 2 3 4.5 7. */
+:root {
+  --font-serif: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --t-12: 0.75rem;
+  --t-13: 0.8125rem;
+  --t-15: 0.9375rem;
+  --t-17: 1.0625rem;
+  --t-20: 1.25rem;
+  --t-24: 1.5rem;
+  --t-32: 2rem;
+  --t-44: 2.75rem;
+
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-12: 3rem;
+  --s-18: 4.5rem;
+  --s-28: 7rem;
+
+  --plate: 45rem;
+  --measure: 34rem;
+  --measure-15: 30rem;
+  --measure-13: 26rem;
+  --gutter: max(20px, 1.25rem);
+  --radius-control: 2px;
+  --ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* The page scale (same rule as the house site): the reader's default up to a 1440 x 900 window, then growing
+   gently with the smaller of width and height, to 2x at 3840 x 2160. */
+html {
+  font-size: clamp(
+    100%,
+    min(
+      max(100% + (100vw - 1440px) / 300, 100% + 3.7333px + (100vw - 2560px) / 104.35),
+      max(100% + (100vh - 900px) / 150, 100% + 3.6px + (100vh - 1440px) / 58.065)
+    ),
+    200%
+  );
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  scroll-padding-top: var(--s-8);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--t-17);
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--ink) 18%, transparent);
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+h1, h2, h3, h4 { text-wrap: balance; }
+p, li, figcaption, dd { text-wrap: pretty; }
+h1, h2, h3, h4, p, ul, ol, dl, dd, figure, blockquote { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+table { border-collapse: collapse; }
+button { font: inherit; color: inherit; }
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(--hair-strong);
+  text-underline-offset: 0.2em;
+}
+a:hover { text-decoration-color: currentColor; }
+
+noscript {
+  display: block;
+  max-width: calc(var(--plate) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding: var(--s-4) var(--gutter);
+  font-size: var(--t-15);
+  color: var(--ink-2);
+}
+
+.mono { font-family: var(--font-mono); font-size: 0.92em; }
+.tnum { font-variant-numeric: lining-nums tabular-nums; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: var(--gutter);
+  top: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  background: var(--raised);
+  border: 1px solid var(--control);
+  border-radius: var(--radius-control);
+  transform: translateY(-200%);
+}
+.skip:focus { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

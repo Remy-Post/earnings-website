@@ -1,0 +1,87 @@
+/*
+ * Colour tokens, copied unchanged from the house site (Remy-Post/data-science app/web/src/styles/tokens.css,
+ * generated there from design/book/palette.json and contrast-checked). Light (Porcelain) is the default; dark
+ * (Vault) applies when the system prefers dark and the reader has not forced light, or when the reader forces dark.
+ */
+:root,
+.scope-light {
+  --bg: #F8FAFD;
+  --surface: #F0F3F7;
+  --raised: #FFFFFF;
+  --hair: #DBE0E8;
+  --hair-strong: #BDC5D0;
+  --control: #828B9B;
+  --ink: #0F192C;
+  --ink-2: #455063;
+  --ink-3: #646E7F;
+  /* The bars of a histogram: the quiet ink. In dark they are a step quieter, so they do not outweigh the text around them. */
+  --bar: var(--ink-2);
+  --gilt: #C09840;
+  --gilt-ink: #7F5C15;
+  --b0: #006EAE;
+  --v0: #BC4D03;
+  --implied: #017F60;
+  --real: #0F192C;
+  --alert: #AF283D;
+  --seq-0: #DCF1E8;
+  --seq-1: #A8D7C4;
+  --seq-2: #6CB69A;
+  --seq-3: #268E6E;
+  --seq-4: #006249;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #070E1B;
+    --surface: #0E1727;
+    --raised: #172032;
+    --hair: #2B3446;
+    --hair-strong: #434D60;
+    --control: #6A7588;
+    --ink: #EDF0F6;
+    --ink-2: #ACB5C3;
+    --ink-3: #7F8A9B;
+    --bar: var(--ink-3);
+    --gilt: #DDB45E;
+    --gilt-ink: #E4BF72;
+    --b0: #61B2F4;
+    --v0: #F78955;
+    --implied: #57D1A8;
+    --real: #F8FAFD;
+    --alert: #FB8087;
+    --seq-0: #1B4234;
+    --seq-1: #1F6150;
+    --seq-2: #2A8C6E;
+    --seq-3: #4BBE98;
+    --seq-4: #8BEFCB;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"],
+.scope-dark {
+  --bg: #070E1B;
+  --surface: #0E1727;
+  --raised: #172032;
+  --hair: #2B3446;
+  --hair-strong: #434D60;
+  --control: #6A7588;
+  --ink: #EDF0F6;
+  --ink-2: #ACB5C3;
+  --ink-3: #7F8A9B;
+  --bar: var(--ink-3);
+  --gilt: #DDB45E;
+  --gilt-ink: #E4BF72;
+  --b0: #61B2F4;
+  --v0: #F78955;
+  --implied: #57D1A8;
+  --real: #F8FAFD;
+  --alert: #FB8087;
+  --seq-0: #1B4234;
+  --seq-1: #1F6150;
+  --seq-2: #2A8C6E;
+  --seq-3: #4BBE98;
+  --seq-4: #8BEFCB;
+  color-scheme: dark;
+}
